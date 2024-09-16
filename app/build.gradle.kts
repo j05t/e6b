@@ -11,13 +11,13 @@ android {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
+        versionCode = 10
         versionName = "1.0"
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
         }
     }
     compileOptions {
@@ -38,6 +38,13 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs.
+        includeInApk = false
+        // Disables dependency metadata when building Android App Bundles.
+        includeInBundle = false
+    }
+
     buildToolsVersion = "34.0.0"
 }
 

@@ -1,0 +1,5 @@
+This is a simulation of the E6B flight computer.
+
+Assets from https://mediafiles.aero.und.edu/aero.und.edu/aviation/trainers/e6b/
+
+Source code available at https://github.com/j05t/e6b
