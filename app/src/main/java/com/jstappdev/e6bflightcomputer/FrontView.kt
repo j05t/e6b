@@ -52,6 +52,9 @@ class FrontView @JvmOverloads constructor(
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
+            isRotating = false
+            isPanning = false
+
             // Adjust the scale factor based on the scale gesture
             scaleFactor *= detector.scaleFactor
 
