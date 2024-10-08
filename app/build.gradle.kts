@@ -11,8 +11,8 @@ android {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 26
         targetSdk = 35
-        versionCode = 10
-        versionName = "1.0"
+        versionCode = 11
+        versionName = "1.1"
     }
 
     buildTypes {
@@ -26,12 +26,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -49,8 +43,5 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.ui.graphics.android)
 }

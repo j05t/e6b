@@ -29,7 +29,7 @@ class BackView @JvmOverloads constructor(
     private var isDotSet: Boolean = false
     private var isRotating = false
     private var initialScaleFactor = 1.0f
-    private var sliderY = 0f
+    private var sliderY = 3f
     private var initialX = 0f
     private var initialY = 0f
     private val matrix = Matrix()
