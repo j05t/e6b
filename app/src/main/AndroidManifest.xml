@@ -8,20 +8,25 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
         android:theme="@style/Theme.E6BFlightComputer"
         tools:targetApi="31">
         <activity
             android:name=".Front"
             android:exported="true"
-            android:theme="@style/Theme.E6BFlightComputer">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.E6BFlightComputer"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Back" />
+        <activity
+            android:name=".Back"
+            android:screenOrientation="portrait"
+            tools:ignore="DiscouragedApi,LockedOrientationActivity" />
     </application>
 
 </manifest>
