@@ -15,7 +15,9 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 
@@ -212,7 +214,7 @@ class BackView @JvmOverloads constructor(
 
             matrix.reset()
             matrix.postScale(scaleFactor, scaleFactor)
-            matrix.postTranslate(dx, dy + 590f.times(scaleFactor))
+            matrix.postTranslate(dx, dy + 520f.times(scaleFactor))
 
             isZoomedIn = !isZoomedIn
 
@@ -241,6 +243,7 @@ class BackView @JvmOverloads constructor(
             }
 
             MotionEvent.ACTION_MOVE -> {
+                updateDot(event.x, event.y)
                 if (isRotating) {
                     val newAngle = calculateAngle(event.x, event.y)
                     val deltaAngle = newAngle - lastAngle
@@ -291,8 +294,44 @@ class BackView @JvmOverloads constructor(
 
         // Now apply the inverse of the rotation around the center
         val angleInRadians = Math.toRadians(-currentRotation.toDouble()).toFloat()
-        val sinAngle = Math.sin(angleInRadians.toDouble()).toFloat()
-        val cosAngle = Math.cos(angleInRadians.toDouble()).toFloat()
+        val sinAngle = sin(angleInRadians.toDouble()).toFloat()
+        val cosAngle = cos(angleInRadians.toDouble()).toFloat()
+
+        val dx = point[0] - centerX
+        val dy = point[1] - centerY
+
+        // Apply reverse rotation
+        val transformedX = centerX + (dx * cosAngle - dy * sinAngle)
+        val transformedY = centerY + (dx * sinAngle + dy * cosAngle)
+
+        // Calculate the distance from the transformed touch point to the center of the circle
+        val distance =
+            sqrt((transformedX - centerX).pow(2) + (transformedY - centerY).pow(2)) * scaleFactor
+
+        return distance <= radius
+    }
+
+    val dotOffsetX = 200
+    val dotOffsetY = 32
+    private fun updateDot(x: Float, y: Float) {
+        // Center of the drawable after translation and scaling
+        val centerX = outerDrawable!!.bounds.centerX().toFloat()
+        val centerY = outerDrawable!!.bounds.centerY().toFloat()
+
+        // Calculate the radius of the circle (considering scaling)
+        val radius = (innerDrawable?.intrinsicWidth ?: 0) / 2f * scaleFactor
+
+        // Apply the inverse of the outer matrix (translation + scaling)
+        val inverseOuterMatrix = Matrix()
+        matrix.invert(inverseOuterMatrix)
+
+        val point = floatArrayOf(x, y)
+        inverseOuterMatrix.mapPoints(point)
+
+        // Now apply the inverse of the rotation around the center
+        val angleInRadians = Math.toRadians(-currentRotation.toDouble()).toFloat()
+        val sinAngle = sin(angleInRadians.toDouble()).toFloat()
+        val cosAngle = cos(angleInRadians.toDouble()).toFloat()
 
         val dx = point[0] - centerX
         val dy = point[1] - centerY
@@ -307,16 +346,16 @@ class BackView @JvmOverloads constructor(
 
         // Optionally, update the dot position if the touch is inside transparent area
         val isInnerDial = distance <= radius - 170 * scaleFactor
-        if (lockState == LockState.UNLOCKED && isInnerDial && !isPanning && !isRotating) {
-            dotX = transformedX
-            dotY = transformedY
+        if (lockState == LockState.UNLOCKED && isInnerDial) {
+            isRotating = false
+            dotX =
+                centerX + ((dx - dotOffsetX * 1 / scaleFactor) * cosAngle - (dy - dotOffsetY * 1 / scaleFactor) * sinAngle)
+            dotY =
+                centerY + ((dx - dotOffsetX * 1 / scaleFactor) * sinAngle + (dy - dotOffsetY * 1 / scaleFactor) * cosAngle)
             isDotSet = true
             invalidate()
         }
-
-        return distance <= radius && !isInnerDial
     }
-
 
     private fun isTouchOutsideOuterDial(x: Float, y: Float): Boolean {
         val centerX = outerDrawable!!.bounds.centerX()
@@ -341,7 +380,6 @@ class BackView @JvmOverloads constructor(
         // Return true if the distance is less than or equal to the radius
         return distance > (radius + 120)
     }
-
 
     private fun calculateAngle(x: Float, y: Float): Float {
         // Get the center of the outerDrawable in screen coordinates
