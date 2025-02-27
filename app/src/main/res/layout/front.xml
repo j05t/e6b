@@ -16,7 +16,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="48dp"
         android:layout_marginRight="0dp"
         android:checked="false"
         tools:ignore="RtlHardcoded" />
@@ -26,7 +26,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="100dp"
         android:layout_marginRight="0dp"
         app:background="@android:drawable/ic_menu_rotate"
         tools:ignore="RtlHardcoded" />
