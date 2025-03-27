@@ -175,12 +175,11 @@ class BackView @JvmOverloads constructor(
         canvas.restore()
 
         // Draw the outerDrawable without any additional transformation
-        canvas.save()
+        //canvas.save()
         canvas.concat(matrix)
         outerDrawable?.draw(canvas)
 
-        innerMatrix.reset()
-        innerMatrix.postRotate(
+        innerMatrix.setRotate(
             currentRotation,
             (outerDrawable?.intrinsicWidth ?: 0) / 2f,
             (outerDrawable?.intrinsicHeight ?: 0) / 2f
@@ -193,7 +192,7 @@ class BackView @JvmOverloads constructor(
             canvas.drawCircle(dotX, dotY, 10f, paint)
         }
 
-        canvas.restore()
+        //canvas.restore()
     }
 
 
@@ -209,12 +208,12 @@ class BackView @JvmOverloads constructor(
             val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
             val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
 
-            val dx = (screenWidth - drawableWidth) / 2f
+            val dx = (screenWidth - drawableWidth)
             val dy = (screenHeight - drawableHeight) / 2f
 
             matrix.reset()
             matrix.postScale(scaleFactor, scaleFactor)
-            matrix.postTranslate(dx, dy + 520f.times(scaleFactor))
+            matrix.postTranslate(dx, dy)
 
             isZoomedIn = !isZoomedIn
 
@@ -311,8 +310,10 @@ class BackView @JvmOverloads constructor(
         return distance <= radius
     }
 
-    val dotOffsetX = 200
-    val dotOffsetY = 32
+    val dotOffsetX = 100 * 1 / scaleFactor
+    val dotOffsetY = 50 * 1 / scaleFactor
+
+    // TODO: horizontally center wind dot during placement
     private fun updateDot(x: Float, y: Float) {
         // Center of the drawable after translation and scaling
         val centerX = outerDrawable!!.bounds.centerX().toFloat()
@@ -348,10 +349,8 @@ class BackView @JvmOverloads constructor(
         val isInnerDial = distance <= radius - 170 * scaleFactor
         if (lockState == LockState.UNLOCKED && isInnerDial) {
             isRotating = false
-            dotX =
-                centerX + ((dx - dotOffsetX * 1 / scaleFactor) * cosAngle - (dy - dotOffsetY * 1 / scaleFactor) * sinAngle)
-            dotY =
-                centerY + ((dx - dotOffsetX * 1 / scaleFactor) * sinAngle + (dy - dotOffsetY * 1 / scaleFactor) * cosAngle)
+            dotX = centerX + ((dx - dotOffsetX) * cosAngle - (dy - dotOffsetY) * sinAngle)
+            dotY = centerY + ((dx - dotOffsetX) * sinAngle + (dy - dotOffsetY) * cosAngle)
             isDotSet = true
             invalidate()
         }

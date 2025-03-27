@@ -11,8 +11,8 @@ android {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 26
         targetSdk = 35
-        versionCode = 14
-        versionName = "1.4"
+        versionCode = 15
+        versionName = "1.5"
     }
 
     buildTypes {
@@ -39,7 +39,7 @@ android {
         includeInBundle = false
     }
 
-    buildToolsVersion = "34.0.0"
+    buildToolsVersion = "35.0.0"
 }
 
 dependencies {
