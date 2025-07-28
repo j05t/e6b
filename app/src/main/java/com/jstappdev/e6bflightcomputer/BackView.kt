@@ -25,13 +25,20 @@ class BackView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    companion object {
+        private var currentRotation = 0f
+        private var lockState: LockState = LockState.UNLOCKED
+        private var sliderY = 3f
+        private var dotX = 0f
+        private var dotY = 0f
+        private var isDotSet: Boolean = false
+    }
+
     private var sliderMatrixWithTranslation: Matrix = Matrix()
     private var screenHeight: Int = 0
     private var screenWidth: Int = 0
-    private var isDotSet: Boolean = false
     private var isRotating = false
     private var initialScaleFactor = 1.0f
-    private var sliderY = 3f
     private var initialX = 0f
     private var initialY = 0f
     private val matrix = Matrix()
@@ -43,24 +50,20 @@ class BackView @JvmOverloads constructor(
     private var scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     private var scaleFactor = 1f
     private var isZoomedIn = false
-    private var currentRotation = 0f
     private var lastAngle = 0f
     private var isPanning = false
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private val paint = Paint()
-    private var dotX = 0f
-    private var dotY = 0f
     private lateinit var lockButton: AppCompatImageButton
-    private var lockState: LockState = LockState.UNLOCKED
 
     enum class LockState {
         UNLOCKED, PARTIALLY_LOCKED, FULLY_LOCKED
     }
 
     fun setLockButton(button: AppCompatImageButton) {
-        this.lockButton = button
-        lockButton.setBackgroundResource(android.R.drawable.ic_menu_rotate)
+        lockButton = button
+        updateLockButton()
 
         lockButton.setOnClickListener { v: View? ->
             lockState = when (lockState) {
@@ -68,31 +71,31 @@ class BackView @JvmOverloads constructor(
                 LockState.PARTIALLY_LOCKED -> LockState.FULLY_LOCKED
                 LockState.FULLY_LOCKED -> LockState.UNLOCKED
             }
-            updateLockButton(lockButton)
+            updateLockButton()
         }
     }
 
-    private fun updateLockButton(v: AppCompatImageButton) {
+    private fun updateLockButton() {
         when (lockState) {
             LockState.UNLOCKED -> {
-                v.setImageDrawable(
+                lockButton.setImageDrawable(
                     ContextCompat.getDrawable(
                         context, android.R.drawable.ic_notification_overlay
                     )
                 )
-                v.setBackgroundResource(
+                lockButton.setBackgroundResource(
                     android.R.drawable.ic_menu_rotate
                 )
             }
 
             LockState.PARTIALLY_LOCKED -> {
-                v.setBackgroundResource(android.R.drawable.ic_menu_rotate)
-                v.setImageDrawable(null)
+                lockButton.setBackgroundResource(android.R.drawable.ic_menu_rotate)
+                lockButton.setImageDrawable(null)
             }
 
             LockState.FULLY_LOCKED -> {
-                v.setBackgroundResource(android.R.drawable.ic_lock_lock)
-                v.setImageDrawable(null)
+                lockButton.setBackgroundResource(android.R.drawable.ic_lock_lock)
+                lockButton.setImageDrawable(null)
             }
         }
     }
@@ -175,7 +178,6 @@ class BackView @JvmOverloads constructor(
         canvas.restore()
 
         // Draw the outerDrawable without any additional transformation
-        //canvas.save()
         canvas.concat(matrix)
         outerDrawable?.draw(canvas)
 
@@ -187,23 +189,13 @@ class BackView @JvmOverloads constructor(
         canvas.concat(innerMatrix)
         innerDrawable?.draw(canvas)
 
-        // Draw the wind mark (dot), if set, on top of everything
-        if (isDotSet) {
-            canvas.drawCircle(dotX, dotY, 10f, paint)
-        }
-
-        //canvas.restore()
+        if (isDotSet) canvas.drawCircle(dotX, dotY, 10f, paint)
     }
-
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(event: MotionEvent): Boolean {
 
-            scaleFactor = if (isZoomedIn) {
-                initialScaleFactor
-            } else {
-                1.5f
-            }
+            scaleFactor = if (isZoomedIn) initialScaleFactor else 1.3f
 
             val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
             val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
@@ -310,10 +302,9 @@ class BackView @JvmOverloads constructor(
         return distance <= radius
     }
 
+    // TODO: horizontally center wind dot during placement
     val dotOffsetX = 100 * 1 / scaleFactor
     val dotOffsetY = 50 * 1 / scaleFactor
-
-    // TODO: horizontally center wind dot during placement
     private fun updateDot(x: Float, y: Float) {
         // Center of the drawable after translation and scaling
         val centerX = outerDrawable!!.bounds.centerX().toFloat()
@@ -325,7 +316,6 @@ class BackView @JvmOverloads constructor(
         // Apply the inverse of the outer matrix (translation + scaling)
         val inverseOuterMatrix = Matrix()
         matrix.invert(inverseOuterMatrix)
-
         val point = floatArrayOf(x, y)
         inverseOuterMatrix.mapPoints(point)
 

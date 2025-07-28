@@ -12,6 +12,7 @@ import android.view.ScaleGestureDetector
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.withMatrix
 import kotlin.math.atan2
 import kotlin.math.pow
 import kotlin.math.sqrt
@@ -19,6 +20,11 @@ import kotlin.math.sqrt
 class FrontView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+
+    companion object {
+        private var currentRotation = 290.5f
+        private var isLocked = false
+    }
 
     private var isRotating = false
     private var initialScaleFactor = 1.0f
@@ -29,13 +35,11 @@ class FrontView @JvmOverloads constructor(
     private val gestureDetector = GestureDetector(context, GestureListener())
     private var scaleFactor = 1f
     private var isZoomedIn = false
-    private var currentRotation = 290.5f
     private var lastAngle = 0f
     private var isPanning = false
     private var lastTouchX = 0f
     private var lastTouchY = 0f
     private lateinit var lockButton: AppCompatImageButton
-    private var isLocked = false
     private var scaleGestureDetector: ScaleGestureDetector
 
     init {
@@ -49,6 +53,7 @@ class FrontView @JvmOverloads constructor(
         )
         scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
     }
+
 
     private inner class ScaleListener : ScaleGestureDetector.SimpleOnScaleGestureListener() {
         override fun onScale(detector: ScaleGestureDetector): Boolean {
@@ -75,10 +80,13 @@ class FrontView @JvmOverloads constructor(
 
     fun setLockButton(button: AppCompatImageButton) {
         lockButton = button
-        lockButton.setBackgroundResource(android.R.drawable.ic_menu_rotate)
+
+        if (isLocked) lockButton.setBackgroundResource(android.R.drawable.ic_lock_lock)
+        else lockButton.setBackgroundResource(android.R.drawable.ic_menu_rotate)
 
         lockButton.setOnClickListener { v: View? ->
             isLocked = !isLocked
+
             if (isLocked) {
                 v!!.setBackgroundResource(android.R.drawable.ic_lock_lock)
             } else {
@@ -124,31 +132,24 @@ class FrontView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.save()
-        canvas.concat(matrix)
-        outerDrawable?.draw(canvas)
-        canvas.save()
+        canvas.withMatrix(matrix) {
+            outerDrawable?.draw(this)
 
-        innerMatrix.reset()
-        innerMatrix.postRotate(
-            currentRotation,
-            outerDrawable!!.intrinsicWidth / 2f,
-            outerDrawable!!.intrinsicHeight / 2f
-        )
-        canvas.concat(innerMatrix)
-        innerDrawable?.draw(canvas)
-
-        canvas.restore()
+            innerMatrix.reset()
+            innerMatrix.postRotate(
+                currentRotation,
+                outerDrawable!!.intrinsicWidth / 2f,
+                outerDrawable!!.intrinsicHeight / 2f
+            )
+            concat(innerMatrix)
+            innerDrawable?.draw(this)
+        }
     }
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(event: MotionEvent): Boolean {
             isZoomedIn = !isZoomedIn
-            scaleFactor = if (isZoomedIn) {
-                1.1f
-            } else {
-                initialScaleFactor
-            }
+            scaleFactor = if (isZoomedIn) 1.1f else initialScaleFactor
             centerDrawable()
             invalidate()
             return true

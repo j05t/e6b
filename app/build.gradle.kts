@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -5,14 +7,14 @@ plugins {
 
 android {
     namespace = "com.jstappdev.e6bflightcomputer"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 15
-        versionName = "1.5"
+        targetSdk = 36
+        versionCode = 16
+        versionName = "1.6"
     }
 
     buildTypes {
@@ -24,9 +26,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+            javaParameters.set(true)
+        }
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
