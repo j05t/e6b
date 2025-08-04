@@ -12,6 +12,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.widget.Magnifier
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import kotlin.math.atan2
@@ -57,6 +58,8 @@ class BackView @JvmOverloads constructor(
     private val paint = Paint()
     private lateinit var lockButton: AppCompatImageButton
 
+    private lateinit var magnifier: Magnifier
+
     enum class LockState {
         UNLOCKED, PARTIALLY_LOCKED, FULLY_LOCKED
     }
@@ -73,6 +76,10 @@ class BackView @JvmOverloads constructor(
             }
             updateLockButton()
         }
+    }
+
+    fun setMagnifier(m: Magnifier) {
+        this.magnifier = m
     }
 
     private fun updateLockButton() {
@@ -149,17 +156,13 @@ class BackView @JvmOverloads constructor(
 
         matrix.reset()
 
-        val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
-        val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
+        val (cx, cy) = getCenter()
 
-        val dx = (screenWidth - drawableWidth) / 2f
-        val dy = (screenHeight - drawableHeight) / 2f
-
-        initialX = dx
-        initialY = dy
+        initialX = cx
+        initialY = cy
 
         matrix.postScale(scaleFactor, scaleFactor)
-        matrix.postTranslate(dx, dy)
+        matrix.postTranslate(cx, cy)
 
         invalidate()
     }
@@ -197,15 +200,11 @@ class BackView @JvmOverloads constructor(
 
             scaleFactor = if (isZoomedIn) initialScaleFactor else 1.3f
 
-            val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
-            val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
-
-            val dx = (screenWidth - drawableWidth)
-            val dy = (screenHeight - drawableHeight) / 2f
+            val (cx, cy) = getCenter()
 
             matrix.reset()
             matrix.postScale(scaleFactor, scaleFactor)
-            matrix.postTranslate(dx, dy)
+            matrix.postTranslate(cx, cy)
 
             isZoomedIn = !isZoomedIn
 
@@ -213,6 +212,14 @@ class BackView @JvmOverloads constructor(
 
             return true
         }
+    }
+
+    private fun getCenter(): Pair<Float, Float> {
+        val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
+        val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
+        val x = (screenWidth - drawableWidth) / 2f
+        val y = (screenHeight - drawableHeight) / 2f
+        return Pair(x, y)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -230,11 +237,13 @@ class BackView @JvmOverloads constructor(
                     isRotating = false
                     lastTouchX = event.x
                     lastTouchY = event.y
+
                 }
             }
 
             MotionEvent.ACTION_MOVE -> {
                 updateDot(event.x, event.y)
+
                 if (isRotating) {
                     val newAngle = calculateAngle(event.x, event.y)
                     val deltaAngle = newAngle - lastAngle
@@ -262,6 +271,7 @@ class BackView @JvmOverloads constructor(
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 isRotating = false
                 isPanning = false
+                magnifier.dismiss()
             }
         }
 
@@ -302,9 +312,7 @@ class BackView @JvmOverloads constructor(
         return distance <= radius
     }
 
-    // TODO: horizontally center wind dot during placement
-    val dotOffsetX = 100 * 1 / scaleFactor
-    val dotOffsetY = 50 * 1 / scaleFactor
+
     private fun updateDot(x: Float, y: Float) {
         // Center of the drawable after translation and scaling
         val centerX = outerDrawable!!.bounds.centerX().toFloat()
@@ -339,9 +347,10 @@ class BackView @JvmOverloads constructor(
         val isInnerDial = distance <= radius - 170 * scaleFactor
         if (lockState == LockState.UNLOCKED && isInnerDial) {
             isRotating = false
-            dotX = centerX + ((dx - dotOffsetX) * cosAngle - (dy - dotOffsetY) * sinAngle)
-            dotY = centerY + ((dx - dotOffsetX) * sinAngle + (dy - dotOffsetY) * cosAngle)
+            dotX = centerX + ((dx) * cosAngle - (dy) * sinAngle)
+            dotY = centerY + ((dx) * sinAngle + (dy) * cosAngle)
             isDotSet = true
+            magnifier.show(x, y)
             invalidate()
         }
     }

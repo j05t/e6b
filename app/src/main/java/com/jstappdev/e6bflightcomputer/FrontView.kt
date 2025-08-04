@@ -97,19 +97,6 @@ class FrontView @JvmOverloads constructor(
         }
     }
 
-    private fun centerDrawable() {
-        matrix.reset()
-
-        val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
-        val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
-
-        val dx = (width - drawableWidth) / 2f
-        val dy = (height - drawableHeight) / 2f
-
-        matrix.postScale(scaleFactor, scaleFactor)
-        matrix.postTranslate(dx, dy)
-    }
-
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val w = MeasureSpec.getSize(widthMeasureSpec)
@@ -150,7 +137,18 @@ class FrontView @JvmOverloads constructor(
         override fun onDoubleTap(event: MotionEvent): Boolean {
             isZoomedIn = !isZoomedIn
             scaleFactor = if (isZoomedIn) 1.1f else initialScaleFactor
-            centerDrawable()
+
+            matrix.reset()
+
+            val drawableWidth = outerDrawable?.intrinsicWidth?.times(scaleFactor) ?: 0f
+            val drawableHeight = outerDrawable?.intrinsicHeight?.times(scaleFactor) ?: 0f
+
+            val dx = (width - drawableWidth) / 2f
+            val dy = (height - drawableHeight) / 2f
+
+            matrix.postScale(scaleFactor, scaleFactor)
+            matrix.postTranslate(dx, dy)
+
             invalidate()
             return true
         }

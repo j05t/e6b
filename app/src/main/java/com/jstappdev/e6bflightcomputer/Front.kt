@@ -17,11 +17,7 @@ class Front : AppCompatActivity() {
         frontView.setLockButton(lockButton)
 
         findViewById<SwitchCompat>(R.id.switch1).setOnCheckedChangeListener { _, _ ->
-            startActivity(
-                Intent(
-                    this, Back::class.java
-                )
-            )
+            startActivity(Intent(this, Back::class.java))
         }
     }
 }
