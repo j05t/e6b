@@ -1,6 +1,7 @@
 [versions]
-agp = "8.12.0"
-kotlin = "2.2.0"
+#noinspection AndroidGradlePluginVersion - downgrade for fdroid
+agp = "8.11.1"
+kotlin = "2.2.10"
 appcompat = "1.7.1"
 
 [libraries]
