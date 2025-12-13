@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.annotation.Keep
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.SwitchCompat
@@ -18,6 +19,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.io.InputStreamReader
 
+@Keep
 data class TutorialStep(
     val title: String,
     val instructions: String,
@@ -26,6 +28,7 @@ data class TutorialStep(
     val targetRotationBlue: Float?
 )
 
+@Keep
 class Front : AppCompatActivity() {
 
     private lateinit var tutorialSteps: List<TutorialStep>
