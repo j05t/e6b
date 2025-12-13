@@ -42,13 +42,18 @@
         android:padding="8dp"
         android:visibility="visible">
 
-        <View
-            android:id="@+id/slideHandle"
-            android:layout_width="40dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray" />
+        <FrameLayout
+            android:id="@+id/handleContainer"
+            android:layout_width="match_parent"
+            android:layout_height="20dp">
+
+            <View
+                android:id="@+id/slideHandle"
+                android:layout_width="40dp"
+                android:layout_height="4dp"
+                android:layout_gravity="center"
+                android:background="@android:color/darker_gray" />
+        </FrameLayout>
 
         <Spinner
             android:id="@+id/tutorialSpinner"

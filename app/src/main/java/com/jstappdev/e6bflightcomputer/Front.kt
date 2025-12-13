@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -94,8 +95,8 @@ class Front : AppCompatActivity() {
     }
 
     private fun setupSlideableTutorial() {
-        val slideHandle = findViewById<View>(R.id.slideHandle)
-        slideHandle.setOnClickListener {
+        val handleContainer = findViewById<FrameLayout>(R.id.handleContainer)
+        handleContainer.setOnClickListener {
             toggleTutorial()
         }
     }
@@ -111,7 +112,7 @@ class Front : AppCompatActivity() {
         val targetY = if (open) {
             (parent.height - tutorialLayout.height).toFloat()
         } else {
-            parent.height - 80f // Hardcoded value to ensure handle is always visible
+            parent.height - 100f // Hardcoded value to ensure handle is always visible
         }
         ObjectAnimator.ofFloat(tutorialLayout, "y", targetY).apply {
             duration = 300
