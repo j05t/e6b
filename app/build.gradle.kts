@@ -13,7 +13,7 @@ android {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 29
         targetSdk = 36
-        versionCode = 18
+        versionCode = 19
         versionName = "1.8"
     }
 
