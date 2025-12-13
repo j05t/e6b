@@ -1,9 +1,12 @@
 package com.jstappdev.e6bflightcomputer
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Matrix
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.GestureDetector
@@ -14,7 +17,9 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.withMatrix
 import kotlin.math.atan2
+import kotlin.math.cos
 import kotlin.math.pow
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 class FrontView @JvmOverloads constructor(
@@ -41,6 +46,17 @@ class FrontView @JvmOverloads constructor(
     private var lastTouchY = 0f
     private lateinit var lockButton: AppCompatImageButton
     private var scaleGestureDetector: ScaleGestureDetector
+    private var highlightRotationYellow: Float? = null
+    private var highlightRotationBlue: Float? = null
+    private var drawHighlight = false
+    private val highlightPaintYellow = Paint().apply {
+        color = Color.argb(128, 255, 255, 0)
+        style = Paint.Style.FILL
+    }
+    private val highlightPaintBlue = Paint().apply {
+        color = Color.argb(128, 0, 191, 255)
+        style = Paint.Style.FILL
+    }
 
     init {
         outerDrawable = ContextCompat.getDrawable(context, R.drawable.tasbase)
@@ -130,6 +146,26 @@ class FrontView @JvmOverloads constructor(
             )
             concat(innerMatrix)
             innerDrawable?.draw(this)
+
+            if (drawHighlight) {
+                val centerX = outerDrawable!!.intrinsicWidth / 2f
+                val centerY = outerDrawable!!.intrinsicHeight / 2f
+                val radius = (innerDrawable?.intrinsicWidth ?: 0) / 2f - 110
+
+                highlightRotationYellow?.let {
+                    val angle = Math.toRadians(it.toDouble())
+                    val x = centerX + radius * cos(angle).toFloat()
+                    val y = centerY + radius * sin(angle).toFloat()
+                    drawCircle(x, y, 30f, highlightPaintYellow)
+                }
+
+                highlightRotationBlue?.let {
+                    val angle = Math.toRadians(it.toDouble())
+                    val x = centerX + radius * cos(angle).toFloat()
+                    val y = centerY + radius * sin(angle).toFloat()
+                    drawCircle(x, y, 30f, highlightPaintBlue)
+                }
+            }
         }
     }
 
@@ -158,6 +194,7 @@ class FrontView @JvmOverloads constructor(
     override fun onTouchEvent(event: MotionEvent): Boolean {
         gestureDetector.onTouchEvent(event)
         scaleGestureDetector.onTouchEvent(event)
+        drawHighlight = false
 
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_DOWN -> {
@@ -245,5 +282,23 @@ class FrontView @JvmOverloads constructor(
 
         // Normalize the angle to be between 0 and 360 degrees
         return if (angle < 0) angle + 360f else angle
+    }
+
+    fun animateInnerWheelTo(mainTargetRotation: Float, yellowTarget: Float, blueTarget: Float?) {
+        highlightRotationYellow = yellowTarget
+        highlightRotationBlue = blueTarget
+        drawHighlight = true
+        val animator = ValueAnimator.ofFloat(currentRotation, mainTargetRotation)
+        animator.addUpdateListener { animation ->
+            currentRotation = animation.animatedValue as Float
+            invalidate()
+        }
+        animator.duration = 1000 // ms
+        animator.start()
+    }
+
+    fun clearHighlights() {
+        drawHighlight = false
+        invalidate()
     }
 }

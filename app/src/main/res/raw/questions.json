@@ -1,0 +1,58 @@
+[
+  {
+    "title": "Time, Speed, Distance (Time)",
+    "instructions": "Problem: You are flying at a ground speed of 140 knots. How long will it take to travel 210 nautical miles?\n\n1. Set the rate: Rotate the inner wheel to place the rate arrow (60) opposite 14 on the outer scale (for 140 knots).\n2. Find distance: Locate 21 on the outer scale (for 210 NM).\n3. Read time: Opposite 21 on the outer scale, read the time on the inner scale. The answer is 90 minutes (1 hour and 30 minutes).",
+    "mainTargetRotation": 422.8,
+    "targetRotationYellow": 259.5,
+    "targetRotationBlue": 323
+  },
+  {
+    "title": "Time, Speed, Distance (Speed)",
+    "instructions": "Problem: You have been flying for 45 minutes and have traveled 90 nautical miles. What is your ground speed?\n\n1. Align time and distance: Rotate the inner wheel to place 45 (for 45 minutes) on the inner scale opposite 90 on the outer scale.\n2. Read speed: Find the rate arrow (60) on the inner scale. It will point to your ground speed on the outer scale. The answer is 120 knots.",
+    "mainTargetRotation": 399.1,
+    "targetRotationYellow": 214.5,
+    "targetRotationBlue": 259.5
+  },
+  {
+    "title": "Time, Speed, Distance (Distance)",
+    "instructions": "Problem: You are flying at a ground speed of 110 knots. How far will you travel in 1 hour and 15 minutes (75 minutes)?\n\n1. Set the rate: Rotate the inner wheel to place the rate arrow (60) opposite 11 on the outer scale (for 110 knots).\n2. Find time: Locate 75 on the inner scale (for 75 minutes).\n3. Read distance: Opposite 75 on the inner scale, read the distance on the outer scale. The answer is approximately 137.5 nautical miles.",
+    "mainTargetRotation": 385.3,
+    "targetRotationYellow": 259.5,
+    "targetRotationBlue": 294.5
+  },
+  {
+    "title": "Fuel Consumption (Fuel Used)",
+    "instructions": "Problem: Your aircraft consumes 12 gallons of fuel per hour. How much fuel will you use on a flight that takes 2 hours and 30 minutes (150 minutes)?\n\n1. Set the rate: Rotate the inner wheel to place the rate arrow (60) opposite 12 on the outer scale (for 12 GPH).\n2. Find time: Locate 15 on the inner scale (for 150 minutes).\n3. Read fuel used: Opposite 15 on the inner scale, read the fuel consumed on the outer scale. The answer is 30 gallons.",
+    "mainTargetRotation": 398.8,
+    "targetRotationYellow": 259.5,
+    "targetRotationBlue": 42.5
+  },
+  {
+    "title": "Fuel Consumption (Endurance)",
+    "instructions": "Problem: Your aircraft has 48 gallons of usable fuel and consumes 15 gallons per hour. What is your maximum endurance?\n\n1. Set the rate: Rotate the inner wheel to place the rate arrow (60) opposite 15 on the outer scale (for 15 GPH).\n2. Find fuel: Locate 48 on the outer scale (for 48 gallons).\n3. Read time: Opposite 48 on the outer scale, read the time on the inner scale. The answer is 192 minutes (3 hours and 12 minutes).",
+    "mainTargetRotation": 433.6,
+    "targetRotationYellow": 259.5,
+    "targetRotationBlue": 85
+  },
+  {
+    "title": "True Airspeed & Density Altitude",
+    "instructions": "Problem: Pressure altitude is 8,000 ft, OAT is -10°C, and Calibrated Airspeed (CAS) is 150 knots. Find TAS and Density Altitude.\n\n1. Align Alt/Temp: In the Pressure Alt window below the Density Alt window, slide the wheel to align 8 (for 8,000 ft) with -10 on the temperature scale.\n2. Find CAS: On the inner scale, locate 15 (for 150 knots CAS).\n3. Read TAS: Opposite 15 on the inner scale, read the True Airspeed on the outer scale. The answer is approximately 165 knots.\n4. Read Density Altitude: Look in the Density Altitude window. The arrow points to approximately 7,000 ft.",
+    "mainTargetRotation": 306.5,
+    "targetRotationYellow": 42.5,
+    "targetRotationBlue": null
+  },
+  {
+    "title": "Nautical to Statute Miles",
+    "instructions": "Problem: Convert 75 nautical miles to statute miles.\n\n1. Align distance: Rotate the inner wheel until 75 on the inner scale is aligned with the 'NAUT' mark on the outer scale.\n2. Read conversion: The 'STAT' mark on the outer scale now points to the equivalent distance in statute miles on the inner scale (approx. 86.5).",
+    "mainTargetRotation": 270.4,
+    "targetRotationYellow": 295,
+    "targetRotationBlue": 317
+  },
+  {
+    "title": "Gallons to Liters",
+    "instructions": "Problem: Convert 30 US gallons to liters.\n\n1. Align volume: Rotate the inner wheel until 30 on the inner scale is aligned with the 'US GAL' mark on the outer scale.\n2. Read conversion: The 'LITERS' mark on the outer scale now points to the equivalent volume in liters on the inner scale (approx. 113.5).",
+    "mainTargetRotation": 517.2,
+    "targetRotationYellow": 151,
+    "targetRotationBlue": 359.5
+  }
+]

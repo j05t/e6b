@@ -15,9 +15,9 @@
         android:id="@+id/switch1"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="48dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginEnd="0dp"
         android:checked="false"
         tools:ignore="RtlHardcoded" />
 
@@ -25,10 +25,54 @@
         android:id="@+id/lockButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="100dp"
-        android:layout_marginRight="0dp"
+        android:layout_below="@id/switch1"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="0dp"
         app:background="@android:drawable/ic_menu_rotate"
         tools:ignore="RtlHardcoded" />
+
+    <LinearLayout
+        android:id="@+id/tutorialLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#80000000"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/slideHandle"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <Spinner
+            android:id="@+id/tutorialSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/darker_gray"
+            android:backgroundTintMode="add" />
+
+        <TextView
+            android:id="@+id/instructionsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            tools:text="Instructions for the selected task will appear here." />
+
+        <Button
+            android:id="@+id/animateButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Show Me"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 </RelativeLayout>

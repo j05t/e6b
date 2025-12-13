@@ -1,11 +1,13 @@
 [versions]
 #noinspection AndroidGradlePluginVersion - downgrade for fdroid
 agp = "8.11.1"
-kotlin = "2.2.10"
+gson = "2.13.2"
+kotlin = "2.2.21"
 appcompat = "1.7.1"
 
 [libraries]
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
