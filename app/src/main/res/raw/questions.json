@@ -36,7 +36,7 @@
   },
   {
     "title": "True Airspeed & Density Altitude",
-    "instructions": "Problem: Pressure altitude is 8,000 ft, OAT is -10°C, and Calibrated Airspeed (CAS) is 150 knots. Find TAS and Density Altitude.\n\n1. Align Alt/Temp: In the Pressure Alt window below the Density Alt window, slide the wheel to align 8 (for 8,000 ft) with -10 on the temperature scale.\n2. Find CAS: On the inner scale, locate 15 (for 150 knots CAS).\n3. Read TAS: Opposite 15 on the inner scale, read the True Airspeed on the outer scale. The answer is approximately 165 knots.\n4. Read Density Altitude: Look in the Density Altitude window. The arrow points to approximately 7,000 ft.",
+    "instructions": "Problem: Pressure altitude is 8,000 ft, OAT is -10°C, and Calibrated Airspeed (CAS) is 150 knots. Find TAS and Density Altitude.\n\n1. Align Alt/Temp: In the Pressure Alt window, slide the wheel to align 8 (for 8,000 ft) with -10 on the temperature scale.\n2. Find CAS: On the inner scale, locate 15 (for 150 knots CAS).\n3. Read TAS: Opposite 15 on the inner scale, read the True Airspeed on the outer scale. The answer is approximately 165 knots.\n4. Read Density Altitude: Look in the Density Altitude window. The arrow points to approximately 7,000 ft.",
     "mainTargetRotation": 306.5,
     "targetRotationYellow": 42.5,
     "targetRotationBlue": null
@@ -50,9 +50,9 @@
   },
   {
     "title": "Gallons to Liters",
-    "instructions": "Problem: Convert 30 US gallons to liters.\n\n1. Align volume: Rotate the inner wheel until 30 on the inner scale is aligned with the 'US GAL' mark on the outer scale.\n2. Read conversion: The 'LITERS' mark on the outer scale now points to the equivalent volume in liters on the inner scale (approx. 113.5).",
-    "mainTargetRotation": 517.2,
-    "targetRotationYellow": 151,
-    "targetRotationBlue": 359.5
+    "instructions": "Problem: Convert 30 US gallons to liters.\n\n1. Align arrows: Rotate the inner wheel to align the 'US GAL' mark on the inner scale with 30 on the outer scale.\n2. Read conversion: Find the 'LITERS' mark on the inner scale. The value on the outer scale opposite it is the volume in liters (approx. 113.5).",
+    "mainTargetRotation": 423.8,
+    "targetRotationYellow": 377.5,
+    "targetRotationBlue": 226.5
   }
 ]

@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.annotation.Keep
@@ -35,7 +36,7 @@ class Front : AppCompatActivity() {
     private lateinit var frontView: FrontView
     private lateinit var instructionsTextView: TextView
     private lateinit var animateButton: Button
-    private var isTutorialOpen = true
+    private var isTutorialOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,10 @@ class Front : AppCompatActivity() {
         loadTutorialSteps()
         setupTutorial()
         setupSlideableTutorial()
+
+        // Set initial state to collapsed
+        val tutorialLayout = findViewById<View>(R.id.tutorialLayout)
+        tutorialLayout.post { animateTutorial(false) }
     }
 
     private fun loadTutorialSteps() {
@@ -112,12 +117,24 @@ class Front : AppCompatActivity() {
         isTutorialOpen = open
         val tutorialLayout = findViewById<View>(R.id.tutorialLayout)
         val parent = tutorialLayout.parent as ViewGroup
+        val slideHandle = findViewById<ImageView>(R.id.slideHandle)
+        val handleContainer = findViewById<View>(R.id.handleContainer)
+
+        val collapsedVisibleHeight = handleContainer.height + tutorialLayout.paddingTop
         val targetY = if (open) {
             (parent.height - tutorialLayout.height).toFloat()
         } else {
-            parent.height - 100f // Hardcoded value to ensure handle is always visible
+            (parent.height - collapsedVisibleHeight).toFloat()
         }
+
         ObjectAnimator.ofFloat(tutorialLayout, "y", targetY).apply {
+            duration = 300
+            start()
+        }
+
+        // Rotate chevron
+        val targetRotation = if (open) 180f else 0f
+        ObjectAnimator.ofFloat(slideHandle, "rotation", targetRotation).apply {
             duration = 300
             start()
         }

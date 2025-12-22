@@ -13,8 +13,8 @@ android {
         applicationId = "com.jstappdev.e6bflightcomputer"
         minSdk = 29
         targetSdk = 36
-        versionCode = 19
-        versionName = "1.8"
+        versionCode = 20
+        versionName = "2.0"
     }
 
     buildTypes {
